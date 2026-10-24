@@ -26,6 +26,6 @@ HTML, CSS and JavaScript (single-file web app, no backend yet)
 Open index.html in any browser.
 
 ## Team
-M R Mohammad Aashiq
-Roopesh
-M Kareem 
+- M R Mohammad Aashiq
+- Roopesh
+- M Kareem
