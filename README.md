@@ -13,7 +13,7 @@ Lost items usually depend on notice boards and group-chat forwards. There is no 
 - Counter for items returned
 
 ## Live demo
-[]
+https://mohammadaashiq.github.io/Campus-loop/
 
 ## Tech
 HTML, CSS and JavaScript (single-file web app, no backend yet)
@@ -23,7 +23,9 @@ HTML, CSS and JavaScript (single-file web app, no backend yet)
 - Login with college email, push notifications, and a database
 
 ## Run it
-Download campusloop-lost-and-found.html and open it in any browser.
+Open index.html in any browser.
 
-## Author
+## Team
 M R Mohammad Aashiq
+M Kareem
+Roopesh
