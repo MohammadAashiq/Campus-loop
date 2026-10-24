@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CampusLoop – Lost & Found</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#1f2430;--mute:#5c6475;--line:#dbe2ee;--blue:#1a73e8;--blue-t:#e8f0fe;--red:#c5221f;--red-t:#fce8e6;--green:#137333;--green-t:#e6f4ea;--amber:#8a5a00;--amber-t:#fef7e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161f;--card:#1b2130;--ink:#e8ecf4;--mute:#a1a9bb;--line:#2e3649;--blue:#8ab4f8;--blue-t:#1d2a44;--red:#f28b82;--red-t:#3a1f20;--green:#81c995;--green-t:#1b3326;--amber:#fdd663;--amber-t:#3a3015}}
+:root[data-theme="dark"]{--bg:#12161f;--card:#1b2130;--ink:#e8ecf4;--mute:#a1a9bb;--line:#2e3649;--blue:#8ab4f8;--blue-t:#1d2a44;--red:#f28b82;--red-t:#3a1f20;--green:#81c995;--green-t:#1b3326;--amber:#fdd663;--amber-t:#3a3015}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+h1{margin:0;font-size:1.7rem;letter-spacing:-.02em}
+h1 span{color:var(--blue)}
+.sub{margin:2px 0 0;color:var(--mute);font-size:.95rem}
+.counter{background:var(--green-t);color:var(--green);border-radius:14px;padding:8px 14px;text-align:center;font-size:.85rem;white-space:nowrap}
+.counter b{display:block;font-size:1.5rem;line-height:1.1}
+nav{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer}
+.tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:9px 14px;border-radius:999px}
+.tab[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+:root[data-theme="dark"] .tab[aria-pressed="true"]{color:#12161f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tab[aria-pressed="true"]{color:#12161f}}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.chips{display:flex;gap:6px;margin-bottom:12px}
+.chip{border:0;background:transparent;color:var(--mute);padding:4px 10px;border-radius:8px}
+.chip[aria-pressed="true"]{background:var(--blue-t);color:var(--blue)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;display:flex;gap:12px}
+.thumb{flex:0 0 64px;height:64px;border-radius:10px;background:var(--blue-t);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:1.4rem;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.body{flex:1;min-width:0}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.title{font-weight:650;margin:0}
+.meta{color:var(--mute);font-size:.88rem;margin:2px 0 6px}
+.desc{margin:0 0 8px;font-size:.95rem}
+.badge{font-size:.8rem;border-radius:8px;padding:2px 8px;white-space:nowrap}
+.lost{background:var(--red-t);color:var(--red)}
+.found{background:var(--green-t);color:var(--green)}
+.done{background:var(--amber-t);color:var(--amber)}
+.tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.tag{font-size:.78rem;background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:0 6px;color:var(--mute)}
+.btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:8px 14px}
+:root[data-theme="dark"] .btn{color:#12161f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#12161f}}
+.btn.ghost{background:transparent;color:var(--blue);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--blue);font-size:1.1rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+label{display:block;font-weight:600;margin:12px 0 4px;font-size:.92rem}
+input[type=text],textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+textarea{min-height:76px;resize:vertical}
+.hint{color:var(--mute);font-size:.85rem;margin:4px 0 0}
+.preview{max-width:140px;max-height:110px;border-radius:10px;margin-top:8px;display:block}
+.claim{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.claim input{flex:1;min-width:140px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:12px;max-width:min(92vw,520px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast[hidden]{display:none}
+.empty{color:var(--mute);text-align:center;padding:28px 8px}
+footer{color:var(--mute);font-size:.82rem;margin-top:24px}
+h2{font-size:1.15rem;margin:0 0 12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Campus<span>Loop</span></h1>
+      <p class="sub">Lost &amp; Found for CIT Chennai</p>
+    </div>
+    <div class="counter"><b id="count">0</b>items returned</div>
+  </header>
+  <nav id="nav">
+    <button class="tab" data-v="feed">Browse items</button>
+    <button class="tab" data-v="lost">I lost something</button>
+    <button class="tab" data-v="found">I found something</button>
+  </nav>
+  <main id="main"></main>
+  <footer>Prototype: matches use keyword and location similarity. Gemini photo tagging and embeddings are planned for the full version.</footer>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+var LOCS=["Library","Canteen / Mess","Lab 3","Block A classroom","Bus stand","Sports ground"];
+var items=[
+ {id:1,type:"found",title:"Black earphone case",desc:"Black case with a small blue sticker, left on a desk",loc:"Library",q:"What colour is the sticker on the case?",a:"blue",status:"open"},
+ {id:2,type:"found",title:"Steel water bottle",desc:"Blue steel bottle with a name written on the lid",loc:"Canteen / Mess",q:"What name is written on the lid?",a:"ravi",status:"open"},
+ {id:3,type:"found",title:"Student ID card",desc:"ID card in a clear plastic cover, found near the systems",loc:"Lab 3",q:"Which department is printed on the card?",a:"cse",status:"open"},
+ {id:4,type:"found",title:"Silver keys with red keychain",desc:"Three keys on a ring with a red keychain",loc:"Block A classroom",q:"What is on the keychain?",a:"football",status:"open"},
+ {id:5,type:"lost",title:"Grey backpack",desc:"Grey backpack with a laptop sleeve and a green zip",loc:"Bus stand",status:"open"}
+];
+var nextId=6, returned=0, view="feed", filter="all", lastMatches=null, lastItem=null, pendingImg=null;
+var STOP=new Set("the and with for was near has have this that from small big one some found lost left".split(" "));
+var SYN={earbuds:"earphone",earbud:"earphone",earphones:"earphone",airpods:"earphone",headphones:"earphone",flask:"bottle",bottles:"bottle",keys:"key",keychain:"key",id:"card",cards:"card",bag:"backpack",bags:"backpack",backpacks:"backpack",calc:"calculator"};
+function toks(s){var out=new Set();(s.toLowerCase().match(/[a-z0-9]+/g)||[]).forEach(function(w){w=SYN[w]||w;if(w.length>2&&!STOP.has(w))out.add(w);});return out;}
+function tagsOf(it){return Array.from(toks(it.title+" "+it.desc)).slice(0,4);}
+function score(a,b){
+  var ta=toks(a.title+" "+a.desc),tb=toks(b.title+" "+b.desc),c=0;
+  ta.forEach(function(w){if(tb.has(w))c++;});
+  var text=(ta.size&&tb.size)?c/Math.sqrt(ta.size*tb.size):0;
+  return Math.min(1,0.8*text+(a.loc===b.loc?0.2:0));
+}
+function findMatches(it){
+  var other=it.type==="lost"?"found":"lost";
+  return items.filter(function(x){return x.type===other&&x.status==="open";})
+    .map(function(x){return {item:x,s:score(it,x)};})
+    .filter(function(m){return m.s>=0.25;})
+    .sort(function(a,b){return b.s-a.s;}).slice(0,3);
+}
+function h(tag,attrs,kids){
+  var e=document.createElement(tag);
+  for(var k in (attrs||{})){
+    if(k==="class")e.className=attrs[k];
+    else if(k.indexOf("on")===0)e.addEventListener(k.slice(2),attrs[k]);
+    else e.setAttribute(k,attrs[k]);
+  }
+  [].concat(kids||[]).forEach(function(c){e.appendChild(typeof c==="string"?document.createTextNode(c):c);});
+  return e;
+}
+var tt;
+function toast(msg){var t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(tt);tt=setTimeout(function(){t.hidden=true;},4500);}
+function setView(v){view=v;pendingImg=null;render();window.scrollTo(0,0);}
+
+function itemCard(it,opts){
+  opts=opts||{};
+  var thumb=h("div",{class:"thumb"},it.img?[h("img",{src:it.img,alt:it.title})]:[it.title.charAt(0).toUpperCase()]);
+  var badge=it.status==="returned"?h("span",{class:"badge done"},["Returned"]):h("span",{class:"badge "+it.type},[it.type==="lost"?"Lost":"Found"]);
+  var body=h("div",{class:"body"},[
+    h("div",{class:"row"},[h("p",{class:"title"},[it.title]),badge]),
+    h("p",{class:"meta"},[it.loc]),
+    h("p",{class:"desc"},[it.desc]),
+    h("div",{class:"tags"},tagsOf(it).map(function(t){return h("span",{class:"tag"},[t]);}))
+  ]);
+  if(it.status==="open"){
+    var box=h("div",{});
+    if(it.type==="found"){
+      var b=h("button",{class:"btn"},["This is mine"]);
+      b.addEventListener("click",function(){showClaim(it,box,b);});
+      box.appendChild(b);
+    } else {
+      box.appendChild(h("button",{class:"btn ghost",onclick:function(){it.status="returned";returned++;toast("Marked as returned. Great news!");render();}},["Mark as returned"]));
+    }
+    body.appendChild(box);
+  }
+  var c=h("div",{class:"card"},[thumb,body]);
+  if(opts.score!==undefined){body.insertBefore(h("div",{class:"score"},[Math.round(opts.score*100)+"% match"]),body.firstChild);}
+  return c;
+}
+function showClaim(it,box,btn){
+  btn.hidden=true;
+  var inp=h("input",{type:"text",placeholder:"Your answer","aria-label":it.q});
+  var go=h("button",{class:"btn"},["Verify"]);
+  go.addEventListener("click",function(){
+    if(inp.value.trim().toLowerCase().indexOf(it.a)!==-1&&inp.value.trim()){
+      it.status="returned";returned++;
+      toast("Verified. Collect it from the Department Office, Block A, ground floor.");
+      render();
+    } else {toast("That answer doesn\u2019t match. Check the item details and try again.");}
+  });
+  box.appendChild(h("p",{class:"hint"},["Only the owner would know: "+it.q]));
+  box.appendChild(h("div",{class:"claim"},[inp,go]));
+  inp.focus();
+}
+
+function renderFeed(m){
+  var chips=h("div",{class:"chips"},["all","lost","found"].map(function(f){
+    return h("button",{class:"chip","aria-pressed":String(filter===f),onclick:function(){filter=f;render();}},[f==="all"?"All":f==="lost"?"Lost":"Found"]);
+  }));
+  m.appendChild(chips);
+  var list=items.filter(function(x){return filter==="all"||x.type===filter;}).slice().reverse();
+  if(!list.length)m.appendChild(h("p",{class:"empty"},["No items here yet. Report one to get started."]));
+  list.forEach(function(it){m.appendChild(itemCard(it));});
+}
+
+function renderForm(m){
+  var isFound=view==="found";
+  var f={};
+  var panel=h("div",{class:"panel"});
+  panel.appendChild(h("h2",{},[isFound?"Report a found item":"Report a lost item"]));
+  function field(label,el,hint){panel.appendChild(h("label",{},[label]));panel.appendChild(el);if(hint)panel.appendChild(h("p",{class:"hint"},[hint]));}
+  f.title=h("input",{type:"text",placeholder:"For example: Black earphone case"});
+  field("What is the item?",f.title);
+  f.desc=h("textarea",{placeholder:"Colour, brand, stickers, marks, anything that stands out"});
+  field("Describe it",f.desc);
+  f.loc=h("select",{},LOCS.map(function(l){return h("option",{value:l},[l]);}));
+  field(isFound?"Where did you find it?":"Where did you last see it?",f.loc);
+  f.photo=h("input",{type:"file",accept:"image/*"});
+  var prev=h("img",{class:"preview",alt:"Selected photo",hidden:"hidden"});
+  f.photo.addEventListener("change",function(){
+    var file=f.photo.files[0];if(!file){pendingImg=null;prev.hidden=true;return;}
+    var r=new FileReader();r.onload=function(){pendingImg=r.result;prev.src=r.result;prev.hidden=false;};r.readAsDataURL(file);
+  });
+  field("Photo (optional)",f.photo);panel.appendChild(prev);
+  if(isFound){
+    f.q=h("input",{type:"text",placeholder:"For example: What sticker is on the case?"});
+    field("Ownership question",f.q,"Only the real owner should be able to answer this. Keep it off the photo and description.");
+    f.a=h("input",{type:"text",placeholder:"The correct answer"});
+    field("Correct answer",f.a);
+  }
+  var go=h("button",{class:"btn",style:"margin-top:16px"},[isFound?"Post found item":"Post lost item"]);
+  go.addEventListener("click",function(){
+    if(!f.title.value.trim()||!f.desc.value.trim()){toast("Add an item name and a short description first.");return;}
+    if(isFound&&(!f.q.value.trim()||!f.a.value.trim())){toast("Add an ownership question and its answer.");return;}
+    var it={id:nextId++,type:view,title:f.title.value.trim(),desc:f.desc.value.trim(),loc:f.loc.value,img:pendingImg,status:"open"};
+    if(isFound){it.q=f.q.value.trim();it.a=f.a.value.trim().toLowerCase();}
+    items.push(it);lastItem=it;lastMatches=findMatches(it);view="matches";pendingImg=null;render();window.scrollTo(0,0);
+  });
+  panel.appendChild(go);
+  m.appendChild(panel);
+}
+
+function renderMatches(m){
+  m.appendChild(h("h2",{},["Item posted"]));
+  m.appendChild(itemCard(lastItem));
+  m.appendChild(h("h2",{},[lastMatches.length?"Possible matches":"No matches yet"]));
+  if(!lastMatches.length){
+    m.appendChild(h("p",{class:"empty"},["Nothing similar so far. We will notify you when a matching item is posted."]));
+  }
+  lastMatches.forEach(function(x){
+    var c=itemCard(x.item,{score:x.s});
+    if(lastItem.type==="found"&&x.item.type==="lost"){
+      var btn=h("button",{class:"btn ghost",onclick:function(){toast("Owner notified. They will answer your ownership question.");btn.disabled=true;}},["Notify owner"]);
+      c.querySelector(".body").appendChild(btn);
+    }
+    m.appendChild(c);
+  });
+  m.appendChild(h("button",{class:"btn ghost",onclick:function(){setView("feed");}},["Back to all items"]));
+}
+
+function render(){
+  document.getElementById("count").textContent=returned;
+  document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===view));});
+  var m=document.getElementById("main");m.innerHTML="";
+  if(view==="feed")renderFeed(m);else if(view==="matches")renderMatches(m);else renderForm(m);
+}
+document.querySelectorAll(".tab").forEach(function(b){b.addEventListener("click",function(){setView(b.dataset.v);});});
+render();
+</script>
+</body>
+</html>
